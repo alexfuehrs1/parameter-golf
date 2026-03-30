@@ -1,0 +1,77 @@
+{
+  "baseline_name": "repo_aligned_transformer_v1",
+  "lane": "B",
+  "status": "frozen",
+  "frozen_at_commit": "a92f98fcba8fe6e29ea991cdcb51111b04d31d3d",
+  "comparison_policy": {
+    "compare_all_future_experiments_against_this": true,
+    "allow_unfrozen_default_drift": false,
+    "notes": "Future experiments must report deltas versus this baseline before any other comparison."
+  },
+  "benchmark_target": {
+    "primary_metric": "roundtrip_bpb",
+    "dataset": "FineWeb validation",
+    "artifact_limit_bytes": 16000000,
+    "train_budget_seconds": 600,
+    "eval_budget_seconds": 600
+  },
+  "run_identity": {
+    "run_name_prefix": "baseline/repo_aligned_transformer_v1",
+    "seed_default": 1337,
+    "seeds_for_variance_followup": [
+      1337,
+      2337,
+      3337
+    ]
+  },
+  "model": {
+    "family": "transformer",
+    "variant": "repo_aligned_dense_decoder_only",
+    "architecture_change_allowed": false,
+    "tokenizer_change_allowed": false,
+    "notes": "Use the repository's existing dense transformer stack without introducing recurrence, tying, hybrid mixers, or tokenizer changes."
+  },
+  "quant": {
+    "mode": "existing_repo_default_roundtrip_quantization",
+    "sweep_enabled": false,
+    "mixed_precision_enabled": false,
+    "gptq_enabled": false,
+    "qat_enabled": false,
+    "clip_search_enabled": false,
+    "notes": "Freeze the current repo-default export and quantization path as the baseline; quant improvements belong to Lane C."
+  },
+  "loader": {
+    "mode": "existing_repo_default_loader",
+    "multi_shard_enabled": false,
+    "async_prefetch_enabled": false,
+    "coprime_stride_sampling_enabled": false,
+    "notes": "Freeze the current repo-default data path; loader optimizations belong to Lane D."
+  },
+  "eval": {
+    "mode": "existing_repo_default_eval",
+    "sliding_window_enabled": false,
+    "ttt_enabled": false,
+    "cache_experiments_enabled": false,
+    "notes": "Use the simplest repo-aligned causal evaluation path; eval optimization belongs to Lane E."
+  },
+  "logging_contract": {
+    "required_fields": [
+      "run_name",
+      "revision",
+      "seed",
+      "model_config",
+      "quant_config",
+      "loader_config",
+      "eval_config",
+      "pre_quant_bpb",
+      "roundtrip_bpb",
+      "quant_gap",
+      "artifact_bytes",
+      "code_bytes",
+      "model_bytes",
+      "train_seconds",
+      "eval_seconds",
+      "ttt_seconds"
+    ]
+  }
+}
